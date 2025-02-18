@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Melbourne's Urban Evolution</title>
+  <!-- Google Fonts for a modern look -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    :root {
+      --primary-color: #ffd700;
+      --secondary-color: #333;
+      --bg-color: #f9f9f9;
+      --nav-bg: rgba(0, 0, 0, 0.85);
+      --section-bg: #fff;
+      --footer-bg: #222;
+      --footer-text: #ccc;
+      --transition-speed: 0.3s;
+    }
+    
+    /* Base Reset and Typography */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Roboto', sans-serif;
+      color: var(--secondary-color);
+      background-color: var(--bg-color);
+      line-height: 1.6;
+    }
+    a {
+      text-decoration: none;
+      color: inherit;
+      transition: color var(--transition-speed);
+    }
+    a:hover {
+      color: var(--primary-color);
+    }
+    img {
+      max-width: 100%;
+      display: block;
+      border-radius: 4px;
+    }
+    
+    /* Navigation */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: var(--nav-bg);
+      z-index: 1000;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0.75rem 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .logo {
+      color: #fff;
+      font-weight: 700;
+      font-size: 1.5rem;
+    }
+    .menu-toggle {
+      background: none;
+      border: none;
+      cursor: pointer;
+      display: none;
+      outline: none;
+    }
+    /* Hamburger Icon */
+    .menu-toggle .hamburger,
+    .menu-toggle .hamburger::before,
+    .menu-toggle .hamburger::after {
+      display: block;
+      background: #fff;
+      height: 3px;
+      width: 25px;
+      border-radius: 3px;
+      position: relative;
+      transition: transform var(--transition-speed), opacity var(--transition-speed);
+    }
+    .menu-toggle .hamburger::before,
+    .menu-toggle .hamburger::after {
+      content: '';
+      position: absolute;
+      left: 0;
+    }
+    .menu-toggle .hamburger::before {
+      top: -8px;
+    }
+    .menu-toggle .hamburger::after {
+      top: 8px;
+    }
+    .nav-menu {
+      display: flex;
+      list-style: none;
+    }
+    .nav-menu li {
+      margin-left: 1.5rem;
+    }
+    .nav-menu li a {
+      color: #fff;
+      font-weight: 500;
+      font-size: 1rem;
+    }
+    
+    /* Mobile Navigation */
+    @media (max-width: 768px) {
+      .menu-toggle {
+        display: block;
+      }
+      .nav-menu {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 70%;
+        height: 100vh;
+        background: var(--nav-bg);
+        flex-direction: column;
+        padding-top: 4rem;
+        transition: right var(--transition-speed);
+      }
+      .nav-menu.active {
+        right: 0;
+      }
+      .nav-menu li {
+        margin: 1rem 0;
+        text-align: center;
+      }
+    }
+    
+    /* Hero Section */
+    header {
+      /* Apply a black-to-transparent gradient over the Melbourne skyline image */
+      background: linear-gradient(to bottom, rgba(0,0,0,0.8), rgba(0,0,0,0)), 
+                  url('images/skyline.png') center/cover no-repeat;
+      height: 100vh;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: #fff;
+    }
+    /* Removed header::before since the gradient overlay is built-in */
+    
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 800px;
+      padding: 1rem;
+    }
+    header h1 {
+      font-size: 3.5rem;
+      margin-bottom: 1rem;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+    }
+    header p {
+      font-size: 1.25rem;
+      margin-bottom: 1.5rem;
+      text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
+    }
+    .cta-button {
+      display: inline-block;
+      padding: 0.75rem 1.5rem;
+      background: var(--primary-color);
+      color: var(--secondary-color);
+      font-weight: 700;
+      border-radius: 4px;
+      transition: background var(--transition-speed);
+    }
+    .cta-button:hover {
+      background: #e6c200;
+    }
+    
+    /* Main Content */
+    main {
+      padding: 6rem 1rem 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    /* Each section fades in as you scroll */
+    section {
+      margin-bottom: 4rem;
+      background: var(--section-bg);
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+    section.in-view {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    section h2 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      border-bottom: 3px solid var(--primary-color);
+      display: inline-block;
+      padding-bottom: 0.25rem;
+    }
+    section p {
+      font-size: 1.125rem;
+      margin-bottom: 1.25rem;
+      line-height: 1.7;
+    }
+    .image-comparison {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: center;
+    }
+    
+    /* New GIF/Image Gallery Styles */
+    .gif-gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+    .gif-gallery figure {
+      margin: 0;
+      text-align: center;
+    }
+    .gif-gallery figcaption {
+      margin-top: 0.5rem;
+      font-size: 0.9rem;
+      color: var(--secondary-color);
+    }
+    
+    /* Video Section */
+    .video-container {
+      position: relative;
+      padding-bottom: 56.25%;
+      height: 0;
+      overflow: hidden;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+    .video-container video,
+    .video-container iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+    
+    /* Footer */
+    footer {
+      background: var(--footer-bg);
+      color: var(--footer-text);
+      text-align: center;
+      padding: 1.5rem;
+    }
+    footer p {
+      font-size: 0.875rem;
+    }
+    .social-share {
+      margin-top: 1rem;
+    }
+    .social-share a {
+      margin: 0 0.5rem;
+      color: var(--primary-color);
+      font-weight: bold;
+    }
+    
+    /* Scroll to Top Button */
+    #toTopBtn {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: var(--primary-color);
+      color: var(--secondary-color);
+      border: none;
+      padding: 0.75rem 1rem;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 1.25rem;
+      display: none;
+      z-index: 1000;
+      transition: background var(--transition-speed), transform var(--transition-speed);
+    }
+    #toTopBtn:hover {
+      background: #e6c200;
+      transform: scale(1.1);
+    }
+    
+    /* Lightbox Styles */
+    #lightbox {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.9);
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+    }
+    #lightbox img {
+      max-width: 90%;
+      max-height: 80%;
+    }
+    #lightbox .close-btn {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      font-size: 2rem;
+      color: #fff;
+      cursor: pointer;
+    }
+    
+    /* Responsive for Hero & Text */
+    @media (max-width: 768px) {
+      header h1 {
+        font-size: 2.5rem;
+      }
+      header p {
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav>
+    <div class="nav-container">
+      <a href="#" class="logo">Melbourne's Urban Evolution</a>
+      <button class="menu-toggle" aria-label="Toggle menu">
+        <span class="hamburger"></span>
+      </button>
+      <ul class="nav-menu">
+        <li><a href="#introduction">Introduction</a></li>
+        <li><a href="#population">Population Growth</a></li>
+        <li><a href="#urban-expansion">Urban Expansion</a></li>
+        <li><a href="#environmental-impact">Environment</a></li>
+        <li><a href="#government-plan">Govt. Plan</a></li>
+        <li><a href="#graph-analysis">Graph Analysis</a></li>
+        <li><a href="#conclusion">Conclusion</a></li>
+        <li><a href="#video">Video</a></li>
+        <li><a href="#references">References</a></li>
+      </ul>
+    </div>
+  </nav>
+  
+  <!-- Hero Section -->
+  <header>
+    <div class="hero-content">
+      <h1>Melbourne Urban Evolution</h1>
+      <p>
+        Exploring the transformation of our city
+      </p>
+      <a href="#introduction" class="cta-button">Discover More</a>
+    </div>
+  </header>
+  
+  <!-- Main Content -->
+  <main>
+    <!-- Introduction Section -->
+    <section id="introduction">
+      <h2>Introduction</h2>
+      <p>
+        Imagine waking up one day to find that the Melbourne you loved—the leafy parks, the quiet neighbourhoods, the familiar skyline—has been transformed overnight into a towering concrete jungle. This isn’t a scene from a dystopian movie; it’s the unfolding reality of our city’s relentless growth. Are we ready to face the cost of progress?
+      </p>
+      <div class="gif-gallery">
+        <figure>
+          <img class="lightbox-enabled" src="images/melbourne1.jpg" alt="" loading="lazy" />
+          <figcaption></figcaption>
+        </figure>
+        <figure>
+          <img class="lightbox-enabled" src="images/melbourne2.jpg" alt="" loading="lazy" />
+          <figcaption></figcaption>
+        </figure>
+      </div>
+    </section>
+    
+    <!-- Population Growth Trends Section -->
+    <section id="population">
+      <h2>Population Growth Trends</h2>
+      <p>
+        Melbourne’s population has been steadily increasing, with nearly a two percent growth each year. According to Infrastructure Victoria (n.d.), Victoria is expected to be home to eleven million people by 2056. Such a surge calls for expansive investments in transport, social, and environmental infrastructure.
+      </p>
+      <p>
+        More compact cities can boost quality of life and sustainability, but urban expansion sometimes results in lower population densities—thereby increasing the cost and complexity of these projects. When planning for expansion, it’s essential to consider environmental and social impacts.
+      </p>
+      <div class="image-comparison">
+        <img class="lightbox-enabled" src="images/population-chart.gif" alt="Animated graph of population growth" loading="lazy" />
+      </div>
+    </section>
+    
+    <!-- Urban Expansion & Infrastructure Development Section -->
+    <section id="urban-expansion">
+      <h2>Urban Expansion &amp; Infrastructure Development</h2>
+      <p>
+        Urban sprawl is a significant challenge in Victoria, with most facilities and buildings concentrated in Melbourne. As the population disperses into regional areas, commuting becomes inconvenient and inefficient. To meet the needs of roughly one million urban residents, it is crucial to expand and optimize key transportation services—trains, trams, and buses.
+      </p>
+      <p>
+        Strategies like reducing travel times, transitioning to electric vehicles, staggering schedules, diversifying transport modes, and introducing pricing incentives can mitigate pollution, overcrowding, and delays. Improved public transport will also contribute to a dramatic drop in greenhouse gas emissions.
+      </p>
+      
+      <!-- New GIF/Image Gallery Under Urban Expansion Section -->
+      <div class="gif-gallery">
+        <figure>
+          <img class="lightbox-enabled" src="images/gif1.gif" alt="Port of Melbourne" loading="lazy" />
+          <figcaption>Port of Melbourne</figcaption>
+        </figure>
+        <figure>
+          <img class="lightbox-enabled" src="images/gif2.jpg" alt="Broadmeadows" loading="lazy" />
+          <figcaption>Broadmeadows</figcaption>
+        </figure>
+        <figure>
+          <img class="lightbox-enabled" src="images/gif3.gif" alt="Airport" loading="lazy" />
+          <figcaption>Airport</figcaption>
+        </figure>
+        <figure>
+          <img class="lightbox-enabled" src="images/gif4.gif" alt="MCG" loading="lazy" />
+          <figcaption>MCG</figcaption>
+        </figure>
+        <figure>
+          <img class="lightbox-enabled" src="images/gif5.gif" alt="Docklands" loading="lazy" />
+          <figcaption>Docklands</figcaption>
+        </figure>
+        <figure>
+          <img class="lightbox-enabled" src="images/gif6.jpg" alt="Thomastown" loading="lazy" />
+          <figcaption>Thomastown</figcaption>
+        </figure>
+        <figure>
+          <img class="lightbox-enabled" src="images/gif7.jpg" alt="Chadstone" loading="lazy" />
+          <figcaption>Chadstone</figcaption>
+        </figure>
+        <figure>
+          <img class="lightbox-enabled" src="images/gif8.gif" alt="Freeway" loading="lazy" />
+          <figcaption>Freeway</figcaption>
+        </figure>
+        <figure>
+          <img class="lightbox-enabled" src="images/gif9.jpg" alt="Doncaster" loading="lazy" />
+          <figcaption>Doncaster</figcaption>
+        </figure>
+        <figure>
+          <img class="lightbox-enabled" src="images/gif10.jpg" alt="Parkville" loading="lazy" />
+          <figcaption>Parkville</figcaption>
+        </figure>
+        <figure>
+          <img class="lightbox-enabled" src="images/gif11.gif" alt="Westgate" loading="lazy" />
+          <figcaption>Westgate</figcaption>
+        </figure>
+      </div>
+    </section>
+    
+    <!-- Environmental Impact Section -->
+    <section id="environmental-impact">
+      <h2>Environmental Impact</h2>
+      <p>
+        Population growth has greatly impacted Melbourne’s environment. Once a swamp turned urban area, many animals and plants have been displaced or destroyed. Air pollution, industrial waste, and light pollution have become part of daily life, not to mention the staggering amount of litter—over 3 billion pieces—washed into our waterways each year.
+      </p>
+      <p>
+        Yet, population growth has also spurred positive environmental efforts: zoos, cleaning initiatives, nature reserves, parks, and more.
+      </p>
+      <div class="gif-gallery">
+        <figure>
+          <img class="lightbox-enabled" src="images/melbourne2000.jpg" alt="" loading="lazy" />
+          <figcaption>2000</figcaption>
+        </figure>
+        <figure>
+          <img class="lightbox-enabled" src="images/melbourne2015.jpg" alt="" loading="lazy" />
+          <figcaption>2015</figcaption>
+        </figure>
+      </div>
+    </section>
+    
+    <!-- Government Plan Section -->
+    <section id="government-plan">
+      <h2>Government Plan</h2>
+      <p>
+        In response to these pressing issues, the Victorian State Government introduced <strong>Plan Melbourne 2017-2050</strong>—a forward-thinking strategy aimed at balancing growth with sustainability. This plan sets a permanent urban growth boundary and focuses on creating affordable, sustainable housing.
+      </p>
+      <p>
+        The vision includes developing ‘20-minute neighborhoods’ where most daily needs are accessible by foot, bike, or short public transport trips. Modernizing public transport, investing in energy-efficient buildings, enforcing waste reduction, promoting water conservation, and endorsing electric vehicles are all part of the roadmap to net-zero greenhouse gas emissions by 2050.
+      </p>
+    </section>
+    
+    <!-- Graph Analysis Section -->
+    <section id="graph-analysis">
+      <h2>Graph Analysis</h2>
+      <p>
+        The first graph illustrates Melbourne’s population rising steadily from around one million in 1950 to over five million in recent years. In contrast, greenhouse gas emissions, which were above 3 million metric tons in 2013, have shown a noticeable downward trend toward 2.5 million metric tons by 2020.
+      </p>
+      <p>
+        This inverse correlation reflects the successful implementation of government policies—stricter energy efficiency standards, investments in renewable energy, and improved public transportation—all contributing to reducing the city’s overall carbon footprint even as the population grows.
+      </p>
+      <div class="gif-gallery">
+        <figure>
+          <img class="lightbox-enabled" src="images/population-chart.gif" alt="" loading="lazy" />
+          <figcaption>population</figcaption>
+        </figure>
+        <figure>
+          <img class="lightbox-enabled" src="images/emission.gif" alt="" loading="lazy" />
+          <figcaption>emission</figcaption>
+        </figure>
+      </div>
+    </section>
+    
+    <!-- Conclusion Section -->
+    <section id="conclusion">
+      <h2>Conclusion</h2>
+      <p>
+        While population growth can devastate the environment—destroying wildlife habitats and natural landscapes—it also pushes governments to adopt ambitious plans that curb urban sprawl, promote affordable and sustainable housing, and drive the mass adoption of zero-emission vehicles.
+      </p>
+      <p>
+        Together, by embracing these initiatives, we can fight for a brighter and greener future for Melbourne and the whole of Victoria.
+      </p>
+    </section>
+    
+    <!-- Video Commentary Section -->
+    <section id="video">
+      <h2>Video Commentary</h2>
+      <p>
+        Watch our comprehensive video commentary that delves deeper into Melbourne’s transformation and the strategies shaping its future.
+      </p>
+      <div class="video-container">
+        <video controls loading="lazy">
+          <source src="video/video.mp4" type="video/mp4" />
+          Your browser does not support HTML5 video.
+        </video>
+      </div>
+    </section>
+    
+    <!-- References Section -->
+    <section id="references">
+      <h2>References</h2>
+      <ul>
+        <li>
+          Macrotrends. (n.d.). Melbourne population 1950-2024. Retrieved from
+          <a href="https://www.macrotrends.net/global-metrics/cities/206168/melbourne/population" target="_blank">https://www.macrotrends.net/global-metrics/cities/206168/melbourne/population</a>
+        </li>
+        <li>
+          The Conversation. (2016, September 13). Density, sprawl, growth: How Australian cities have changed in the last 30 years. Retrieved from
+          <a href="https://theconversation.com/density-sprawl-growth-how-australian-cities-have-changed-in-the-last-30-years-65870" target="_blank">https://theconversation.com/density-sprawl-growth-how-australian-cities-have-changed-in-the-last-30-years-65870</a>
+        </li>
+        <li>
+          World Population Review. (n.d.). Melbourne population 2024. Retrieved from
+          <a href="https://worldpopulationreview.com/cities/australia/melbourne" target="_blank">https://worldpopulationreview.com/cities/australia/melbourne</a>
+        </li>
+        <li>
+          Victorian Government. (n.d.). Plan Melbourne 2017-2050. Retrieved from
+          <a href="https://www.planning.vic.gov.au/guides-and-resources/strategies-and-initiatives/plan-melbourne/the-plan" target="_blank">https://www.planning.vic.gov.au/guides-and-resources/strategies-and-initiatives/plan-melbourne/the-plan</a>
+        </li>
+        <li>
+          The Age. (2017, April 5). The little white house in South Yarra that has outlasted them all. Retrieved from
+          <a href="https://www.theage.com.au/national/victoria/the-little-white-house-in-south-yarra-that-has-outlasted-them-all-20170405-gvdx0l.html" target="_blank">https://www.theage.com.au/national/victoria/the-little-white-house-in-south-yarra-that-has-outlasted-them-all-20170405-gvdx0l.html</a>
+        </li>
+        <li>
+          Infrastructure Victoria. (n.d.). Transport. Retrieved from
+          <a href="https://www.infrastructurevictoria.com.au/topics/transport" target="_blank">https://www.infrastructurevictoria.com.au/topics/transport</a>
+        </li>
+        <li>
+          Infrastructure Victoria. (n.d.). Homepage. Retrieved from
+          <a href="https://www.infrastructurevictoria.com.au/" target="_blank">https://www.infrastructurevictoria.com.au/</a>
+        </li>
+        <li>
+          Victorian Government. (2017). Plan Melbourne 2017-2050. Retrieved from
+          <a href="https://www.planning.vic.gov.au/" target="_blank">https://www.planning.vic.gov.au/</a>
+        </li>
+        <li>
+          Victorian Government. (2016). Victoria in Future 2056 (VIF 2056). Retrieved from
+          <a href="https://www.infrastructurevictoria.com.au/" target="_blank">https://www.infrastructurevictoria.com.au/</a>
+        </li>
+        <li>
+          The Conversation. (2016, September 13). Density, sprawl, growth: How Australian cities have changed in the last 30 years. Retrieved from
+          <a href="https://theconversation.com/density-sprawl-growth-how-australian-cities-have-changed-in-the-last-30-years-65870" target="_blank">https://theconversation.com/density-sprawl-growth-how-australian-cities-have-changed-in-the-last-30-years-65870</a>
+        </li>
+      </ul>
+    </section>
+  </main>
+  
+  <!-- Scroll to Top Button -->
+  <button id="toTopBtn" title="Back to top">&#8679;</button>
+  
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2025 MHS Enterprises | All Rights Reserved</p>
+    <div class="social-share">
+      <a href="https://www.facebook.com/sharer.php?u=YOUR_PAGE_URL" target="_blank">Facebook</a>
+      <a href="https://twitter.com/intent/tweet?url=YOUR_PAGE_URL" target="_blank">Twitter</a>
+      <a href="https://www.linkedin.com/shareArticle?url=YOUR_PAGE_URL" target="_blank">LinkedIn</a>
+    </div>
+  </footer>
+  
+  <!-- Lightbox Modal -->
+  <div id="lightbox">
+    <span class="close-btn">&times;</span>
+    <img src="" alt="Enlarged view" />
+  </div>
+  
+  <!-- JavaScript -->
+  <script>
+    // Mobile Navigation Toggle
+    const menuToggle = document.querySelector('.menu-toggle');
+    const navMenu = document.querySelector('.nav-menu');
+    menuToggle.addEventListener('click', () => {
+      navMenu.classList.toggle('active');
+      menuToggle.classList.toggle('open');
+    });
+    document.querySelectorAll('.nav-menu a').forEach(link => {
+      link.addEventListener('click', () => {
+        if (navMenu.classList.contains('active')) {
+          navMenu.classList.remove('active');
+          menuToggle.classList.remove('open');
+        }
+      });
+    });
+    
+    // Smooth scrolling for nav links
+    document.querySelectorAll('nav a').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const targetID = this.getAttribute('href').slice(1);
+        const targetSection = document.getElementById(targetID);
+        window.scrollTo({
+          top: targetSection.offsetTop - 70,
+          behavior: 'smooth'
+        });
+      });
+    });
+    
+    // Scroll-to-top button functionality
+    const toTopBtn = document.getElementById('toTopBtn');
+    window.addEventListener('scroll', () => {
+      toTopBtn.style.display = window.pageYOffset > 300 ? 'block' : 'none';
+    });
+    toTopBtn.addEventListener('click', () => {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    });
+    
+    // Lightbox Functionality
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImage = lightbox.querySelector('img');
+    const closeBtn = lightbox.querySelector('.close-btn');
+    
+    document.querySelectorAll('img.lightbox-enabled').forEach(img => {
+      img.addEventListener('click', () => {
+        lightboxImage.src = img.src;
+        lightbox.style.display = 'flex';
+      });
+    });
+    // Close the lightbox when clicking on the close button or outside the image
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox || e.target === closeBtn) {
+        lightbox.style.display = 'none';
+      }
+    });
+    
+    // Scroll-Reveal Animation for sections
+    const sections = document.querySelectorAll('section');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    sections.forEach(section => {
+      observer.observe(section);
+    });
+  </script>
+</body>
+</html>
